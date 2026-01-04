@@ -31,7 +31,7 @@ type IndicesT struct {
 func GetFromHTML(feed *feeds.Feed, rawHTML *string, regexString string, infoIndices IndicesT, maxFeedItems int) (*string, error) {
 	now := time.Now()
 	r := regexp.MustCompile(regexString)
-	newsItems := r.FindAllString(*rawHTML, 5)
+	newsItems := r.FindAllString(*rawHTML, maxFeedItems)
 	for i, item := range newsItems {
 		info := r.FindStringSubmatch(item)
 		link := stitchFields(info, infoIndices.LinkC, infoIndices.LinkI)
@@ -47,9 +47,6 @@ func GetFromHTML(feed *feeds.Feed, rawHTML *string, regexString string, infoIndi
 			Created: now,
 		}
 		feed.Items = append(feed.Items, feedItem)
-		if i == maxFeedItems {
-			break
-		}
 	}
 	atom, err := feed.ToAtom()
 	if err != nil {
