@@ -1,0 +1,33 @@
+<input>
+    <apiMethodEndpointPayload
+    ><![CDATA[POST@https://api.enchor.us/search@{"search":"*","per_page":10,"page":1,"instrument":null,"difficulty":null,"drumType":null,"drumsReviewed":false,"sort":null,"source":"bridge"}]]></apiMethodEndpointPayload>
+    <regex
+    ><![CDATA[{\"ordering\":.*?,\"name\":\"(.*?)\",\"artist\":\"(.*?)\",\"album\":\"(.*?)\",.*?\",\"md5\":\"(.*?)\",.*?,\"charter\":\"(.*?)\",]]></regex>
+    <loadSeconds>1</loadSeconds>
+    <maxFeedItems>10</maxFeedItems>
+    <feed>
+        <title>
+            <parent>Chorus Encore</parent>
+                <captureGroupConnector />
+                <captureGroupIndex>1</captureGroupIndex>
+                <captureGroupConnector> by </captureGroupConnector>
+                <captureGroupIndex>2</captureGroupIndex>
+        </title>
+        <link><parent>https://www.enchor.us/</parent>
+            <captureGroupConnector>https://www.enchor.us/chart/</captureGroupConnector>
+            <captureGroupIndex>4</captureGroupIndex>
+        </link>
+        <description>
+            <parent>Latest YARG/CH charts published to Chorus Encore</parent>
+            <captureGroupConnector>Charter: </captureGroupConnector>
+            <captureGroupIndex>5</captureGroupIndex>
+            <captureGroupConnector> | Album: </captureGroupConnector>
+            <captureGroupIndex>3</captureGroupIndex>
+        </description>
+        <authorName>
+            <parent>Gamers</parent>
+            <captureGroupIndex>5</captureGroupIndex>
+        </authorName>
+        <authorEmail />
+    </feed>
+</input>

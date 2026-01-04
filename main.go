@@ -5,10 +5,11 @@ import (
 	"encoding/xml"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/gorilla/feeds"
 	"github.com/rwinkhart/backtone/atom"
-	"github.com/rwinkhart/backtone/bthtml"
+	"github.com/rwinkhart/backtone/websrc"
 	"github.com/rwinkhart/go-boilerplate/other"
 )
 
@@ -32,11 +33,12 @@ type feedT struct {
 	AuthorEmail feedFieldInfoT `xml:"authorEmail"`
 }
 type inputT struct {
-	FlareSolverrURL string  `xml:"flareSolverrURL"`
-	Regex           string  `xml:"regex"`
-	LoadSeconds     float32 `xml:"loadSeconds"`
-	MaxFeedItems    int     `xml:"maxFeedItems"`
-	Feed            feedT   `xml:"feed"`
+	FlareSolverrEndpoint     string  `xml:"flareSolverrEndpoint,omitempty"`
+	APIMethodEndpointPayload string  `xml:"apiMethodEndpointPayload,omitempty"`
+	Regex                    string  `xml:"regex"`
+	LoadSeconds              float32 `xml:"loadSeconds"`
+	MaxFeedItems             int     `xml:"maxFeedItems"`
+	Feed                     feedT   `xml:"feed"`
 }
 
 func main() {
@@ -44,10 +46,10 @@ func main() {
 	if len(os.Args) < 2 {
 		demoInputBytes, _ := xml.MarshalIndent(
 			inputT{
-				FlareSolverrURL: "http://127.0.0.1:8191",
-				Regex:           "PLACEHOLDER",
-				LoadSeconds:     2.5,
-				MaxFeedItems:    10,
+				FlareSolverrEndpoint: "http://127.0.0.1:8191",
+				Regex:                "PLACEHOLDER",
+				LoadSeconds:          2.5,
+				MaxFeedItems:         10,
 				Feed: feedT{
 					Title:       feedFieldInfoT{Parent: "Demo Title", CaptureGroupIndex: []int8{0}},
 					Link:        feedFieldInfoT{Parent: "https://example.com/", CaptureGroupIndex: []int8{1}},
@@ -73,9 +75,20 @@ func main() {
 		other.PrintError("Failed to unmarshal input XML: "+err.Error(), 1)
 	}
 
-	rawHTML, err := bthtml.GetFromURL(inputInfo.FlareSolverrURL, inputInfo.Feed.Link.Parent, inputInfo.LoadSeconds)
-	if err != nil {
-		other.PrintError("Failed to get HTML content: "+err.Error(), 1)
+	var rawString string
+	if inputInfo.FlareSolverrEndpoint != "" {
+		rawString, err = websrc.GetByScrape(inputInfo.FlareSolverrEndpoint, inputInfo.Feed.Link.Parent, inputInfo.LoadSeconds)
+		if err != nil {
+			other.PrintError("Failed to scrape HTML content: "+err.Error(), 1)
+		}
+	} else if inputInfo.APIMethodEndpointPayload != "" {
+		apiInfoSplit := strings.Split(inputInfo.APIMethodEndpointPayload, "@")
+		rawString, err = websrc.GetByAPIJson(apiInfoSplit[0], apiInfoSplit[1], []byte(apiInfoSplit[2]))
+		if err != nil {
+			other.PrintError("Failed to get API response: "+err.Error(), 1)
+		}
+	} else {
+		other.PrintError("Either FlareSolverrEndpoint or APIMethodPayload must be specified", 1)
 	}
 
 	atomXML, err := atom.GetFromString(
@@ -85,7 +98,7 @@ func main() {
 			Description: inputInfo.Feed.Description.Parent,
 			Author:      &feeds.Author{Name: inputInfo.Feed.AuthorName.Parent, Email: inputInfo.Feed.AuthorEmail.Parent},
 		},
-		&rawHTML,
+		&rawString,
 		inputInfo.Regex,
 		atom.IndicesT{
 			TitleC:       inputInfo.Feed.Title.CaptureGroupConnector,
@@ -102,7 +115,7 @@ func main() {
 		inputInfo.MaxFeedItems,
 	)
 	if err != nil {
-		other.PrintError("Failed to generate Atom RSS feed from HTML:\n\n"+rawHTML+"\n\n"+err.Error(), 1)
+		other.PrintError("Failed to generate Atom RSS feed from HTML:\n\n"+rawString+"\n\n"+err.Error(), 1)
 	}
 	fmt.Println(*atomXML)
 }
