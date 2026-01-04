@@ -32,9 +32,9 @@ type feedT struct {
 	AuthorEmail feedFieldInfoT `xml:"authorEmail"`
 }
 type inputT struct {
-	LoadSeconds     float32 `xml:"loadSeconds"`
-	Regex           string  `xml:"regex"`
 	FlareSolverrURL string  `xml:"flareSolverrURL"`
+	Regex           string  `xml:"regex"`
+	LoadSeconds     float32 `xml:"loadSeconds"`
 	MaxFeedItems    int     `xml:"maxFeedItems"`
 	Feed            feedT   `xml:"feed"`
 }
@@ -44,9 +44,9 @@ func main() {
 	if len(os.Args) < 2 {
 		demoInputBytes, _ := xml.MarshalIndent(
 			inputT{
-				LoadSeconds:     2.5,
-				Regex:           "PLACEHOLDER",
 				FlareSolverrURL: "http://127.0.0.1:8191",
+				Regex:           "PLACEHOLDER",
+				LoadSeconds:     2.5,
 				MaxFeedItems:    10,
 				Feed: feedT{
 					Title:       feedFieldInfoT{Parent: "Demo Title", CaptureGroupIndex: []int8{0}},
