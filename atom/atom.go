@@ -28,10 +28,10 @@ type IndicesT struct {
 	AuthorEmailI []int8
 }
 
-func GetFromHTML(feed *feeds.Feed, rawHTML *string, regexString string, infoIndices IndicesT, maxFeedItems int) (*string, error) {
+func GetFromString(feed *feeds.Feed, input *string, regexString string, infoIndices IndicesT, maxFeedItems int) (*string, error) {
 	now := time.Now()
 	r := regexp.MustCompile(regexString)
-	newsItems := r.FindAllString(*rawHTML, maxFeedItems)
+	newsItems := r.FindAllString(*input, maxFeedItems)
 	for i, item := range newsItems {
 		info := r.FindStringSubmatch(item)
 		link := stitchFields(info, infoIndices.LinkC, infoIndices.LinkI)

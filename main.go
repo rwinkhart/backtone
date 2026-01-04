@@ -78,7 +78,7 @@ func main() {
 		other.PrintError("Failed to get HTML content: "+err.Error(), 1)
 	}
 
-	atomXML, err := atom.GetFromHTML(
+	atomXML, err := atom.GetFromString(
 		&feeds.Feed{
 			Title:       inputInfo.Feed.Title.Parent,
 			Link:        &feeds.Link{Href: inputInfo.Feed.Link.Parent},
