@@ -1,0 +1,22 @@
+backtone.example.com {
+
+    tls {
+        protocols tls1.3
+    }
+
+    log {
+        output file /tmp/caddy-backtone.log {
+            roll_size 2MiB
+            roll_keep 3
+            roll_keep_for 24h
+        }
+        level INFO
+    }
+
+    root * /path/to/feeds/directory
+    encode gzip
+    file_server
+
+    php_fastcgi 127.0.0.1:9000
+
+}
