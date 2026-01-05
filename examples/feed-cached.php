@@ -9,5 +9,5 @@ header("Content-Type: application/xml; charset=utf-8");
 readfile($cacheFile);
 
 // trigger background regeneration
-exec(escapeshellcmd($command) . " " . escapeshellarg($argument) . " > " . escapeshellarg($tempFile) . " 2>&1 && mv " . escapeshellarg($tempFile) . " " . escapeshellarg($cacheFile) . " &");
+exec(escapeshellcmd($command) . " " . escapeshellarg($argument) . " > " . escapeshellarg($cacheFile) . " 2>&1 &");
 ?>
