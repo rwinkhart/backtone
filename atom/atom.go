@@ -72,5 +72,20 @@ func stitchFields(info []string, connectors []string, indices []int8) string {
 			output.WriteString(info[indices[i]])
 		}
 	}
-	return output.String()
+	return interpretUnicode(output.String())
+}
+
+func interpretUnicode(s string) string {
+	// match \uXXXX patterns
+	r := regexp.MustCompile(`\\u([0-9a-fA-F]{4})`)
+	result := r.ReplaceAllStringFunc(s, func(match string) string {
+		// extract the hex value
+		hexStr := match[2:] // skip the \u part
+		code, err := strconv.ParseInt(hexStr, 16, 32)
+		if err != nil {
+			return match // if parsing fails, return original
+		}
+		return string(rune(code))
+	})
+	return result
 }

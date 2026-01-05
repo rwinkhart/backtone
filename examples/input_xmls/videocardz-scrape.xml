@@ -1,0 +1,26 @@
+<input>
+    <flareSolverrEndpoint>http://PLACEHOLDER:8191/v1</flareSolverrEndpoint>
+    <regex
+    ><![CDATA[<item>.*?<title>(.*?)<\/title>.*?<link>(.*?)<\/link>.*?<description><!\[CDATA\[ (.*?)<br\/>]]></regex>
+    <loadSeconds>0</loadSeconds>
+    <maxFeedItems>10</maxFeedItems>
+    <feed>
+        <title>
+            <parent>VideoCardz</parent>
+                <captureGroupIndex>1</captureGroupIndex>
+        </title>
+        <link><parent>https://videocardz.com/rss-feed</parent>
+            <captureGroupIndex>2</captureGroupIndex>
+        </link>
+        <description>
+            <parent>Official RSS Feed from VideoCardz.com translated to Atom.</parent>
+            <captureGroupIndex>3</captureGroupIndex>
+        </description>
+        <authorName>
+            <parent>VideoCardz.com</parent>
+        </authorName>
+        <authorEmail>
+            <parent>maciej+rssfeed@videocardz.com</parent>
+        </authorEmail>
+    </feed>
+</input>
