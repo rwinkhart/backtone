@@ -1,0 +1,24 @@
+<input>
+    <flareSolverrEndpoint>http://PLACEHOLDER:8191/v1</flareSolverrEndpoint>
+    <regex
+    ><![CDATA[<h1 class=\\"news-header\\"><a href=\\"(.*?)\" class=\\"link link--bare\\">(.*?)<\/a><\/h1><\/header><p class=\\"news-teaser\\">(.*?)<\/p>]]></regex>
+    <loadSeconds>0</loadSeconds>
+    <maxFeedItems>10</maxFeedItems>
+    <feed>
+        <title>
+            <parent>Nitro Type News</parent>
+                <captureGroupIndex>2</captureGroupIndex>
+        </title>
+        <link><parent>https://www.nitrotype.com/news</parent>
+            <captureGroupConnector>https://www.nitrotype.com</captureGroupConnector>
+            <captureGroupIndex>1</captureGroupIndex>
+        </link>
+        <description>
+            <parent>Updates and event information from Nitro Type.</parent>
+            <captureGroupIndex>3</captureGroupIndex>
+        </description>
+        <authorName>
+            <parent>Nitro Teaching, LLC</parent>
+        </authorName>
+    </feed>
+</input>
