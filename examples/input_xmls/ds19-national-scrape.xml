@@ -1,0 +1,25 @@
+<input>
+    <flareSolverrEndpoint>http://PLACEHOLDER:8191/v1</flareSolverrEndpoint>
+    <regex><![CDATA[<a href=\\"\?id=(.*?)\\".*?<p>(.*?) by (.*?)<\/p>]]></regex>
+    <loadSeconds>0</loadSeconds>
+    <maxFeedItems>10</maxFeedItems>
+    <feed>
+        <title>
+            <parent>DarkSlides19 National Tracks</parent>
+                <captureGroupIndex>2</captureGroupIndex>
+        </title>
+        <link><parent>https://www.ds19.eu/content/?t=nat</parent>
+            <captureGroupConnector>https://www.ds19.eu/content/?id=</captureGroupConnector>
+            <captureGroupIndex>1</captureGroupIndex>
+        </link>
+        <description>
+            <parent>Custom national tracks for MX vs ATV Reflex</parent>
+            <captureGroupConnector>By: </captureGroupConnector>
+            <captureGroupIndex>3</captureGroupIndex>
+        </description>
+        <authorName>
+            <parent>DarkSlides19</parent>
+            <captureGroupIndex>3</captureGroupIndex>
+        </authorName>
+    </feed>
+</input>
